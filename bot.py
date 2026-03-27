@@ -133,6 +133,19 @@ async def testprompt(ctx):
     )
     await msg.add_reaction("👍")
 
+@bot.event
+async def on_message(message):
+    if message.author.bot:
+        return
+
+    if message.channel.id == CHANNEL_ID and bot.user in message.mentions:
+        await message.reply(
+            "I'm up and running. I post the Sunday host check-in on Thursdays at 9:00 AM "
+            "and I escalate on Saturdays at 9:00 AM if nobody reacts with 👍."
+        )
+
+    await bot.process_commands(message)
+
 
 @thursday_poster.before_loop
 @saturday_checker.before_loop
